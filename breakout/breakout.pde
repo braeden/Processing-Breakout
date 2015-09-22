@@ -11,16 +11,18 @@ class Ball {
   void initialize(float xi, float yi) {
     x = xi;
     y = yi; 
-    vy = -1.5;
+    vy = 1.5;
     int[] sign = {-1, 1};
-    vx = -(random(0.3, 1) * sign[round(random(1))]); // random number from -1 to -0.3 or 0.3 to 1
+    vx = random(0.3, 1) * sign[round(random(1))]; // random number from -1 to -0.3 or 0.3 to 1
   }
   
   void checkCollisions() {   
-    if (x > 0 && x < float(width)) { // in between left edge and right edge
-      if (x <= 0 || x > width) // hit top edge or bottom edge
+    if (y < height) { // in between left edge and right edge
+      if (y <= 0 || y > height) // hit top edge or bottom edge
         vy = -vy;
-      else {        
+      else if (x <= 0 || x > width) {
+        vx = -vx;
+      } else {        
         if (collideCorners(p1)|| collideLeftOrRight(p1)) { // corner and left or right edge
           vx = -vx;
         } else if (collideTopOrBottom(p1)){ // top or bottom edge
@@ -79,12 +81,12 @@ class Paddle {
   }
   
   void move() {
-    if (left && x > (0 + h/2)) {
+    if (left && x > (0 + w/2)) {
       x -= s;
       
       if (b.collide(this))
         b.y -= s+1;
-    } else if (right && x < (width - h/2)) {
+    } else if (right && x < (width - w/2)) {
       x += s;
       
       if (b.collide(this))
