@@ -150,11 +150,7 @@ void draw() {
   fill(100);
   b.draw();
   p1.draw();
-  
-  // MOVE PADDLES
-  p1.move();
- 
-  // MOVE BALL
   b.checkCollisions();
+  p1.move();
   b.move();  
 }
