@@ -99,9 +99,34 @@ class Paddle {
   }
 }
 
+
+
+class Bricks {
+  float x,y;
+  float w, h;
+  boolean hit;
+  color c;
+  Bricks(float inx, float iny, float inw, float inh, color inc, boolean inhit) {
+    x = inx;
+    y = iny;
+    w = inw;
+    h = inh;
+    c = inc;
+    hit = inhit;
+  }
+  
+  void draw() {
+    noStroke();
+    fill(c);
+    rect(x, y, w, h);
+  }
+}
+
+
 // GLOBALS
 Ball b;
 Paddle p1;
+Bricks[] brick;
 
 // GAME FUNCTIONS
 void startGame() {
@@ -138,7 +163,28 @@ void setup() {
   
   b = new Ball();
   p1 = new Paddle();
-  
+  brick = new Bricks[100];
+  float wdth = width/10;
+  float hght = height/30;
+  float plusx = wdth/2;
+  float plusy = hght*3;
+  color col = color(0,0,0);
+  for (int i=0; i<10; i++) {//Y
+    for (int j=0; j<10; j++) {//X
+      if (i<2) {
+        col = color(255,0,0);
+      } else if (i<4) {
+        col = color(255,165,0);
+      } else if (i<6) {
+        col = color(255,255,0);
+      } else if (i<8) {
+        col = color(0,255,0);
+      } else if (i<10) {
+        col = color(0,255,255);
+      }
+      brick[i*10+j] = new Bricks(wdth*j+plusx, hght*i+plusy, wdth-2, hght-2, col, false);
+    }
+  }
   startGame();
 }
 
@@ -150,6 +196,9 @@ void draw() {
   fill(100);
   b.draw();
   p1.draw();
+  for (int i=0; i<100; i++) {
+    brick[i].draw();
+  }
   b.checkCollisions();
   p1.move();
   b.move();  
