@@ -11,14 +11,14 @@ class Ball {
   void initialize(float xi, float yi) {
     x = xi;
     y = yi; 
-    vy = -1.5;
+    vy = 1.5;
     int[] sign = {-1, 1};
     vx = -(random(0.3, 1) * sign[round(random(1))]); // random number from -1 to -0.3 or 0.3 to 1
   }
   
   void checkCollisions() {   
     if (x > 0 && x < float(width)) { // in between left edge and right edge
-      if (x <= 0 || x > width) // hit top edge or bottom edge
+      if (y <= 0 || y > height) // hit top edge or bottom edge
         vy = -vy;
       else {        
         if (collideCorners(p1)|| collideLeftOrRight(p1)) { // corner and left or right edge
@@ -27,8 +27,8 @@ class Ball {
           vy = -vy;
         }
       }
-    } else { // hit left edge or right edge
-     startGame();
+    } else if (x <= 0 || x > width) { // hit left edge or right edge
+       vx = -vx;
     }
   }
   
