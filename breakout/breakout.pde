@@ -164,10 +164,10 @@ void setup() {
   b = new Ball();
   p1 = new Paddle();
   brick = new Bricks[100];
-  float wdth = width/10;
-  float hght = height/30;
-  float plusx = wdth/2;
-  float plusy = hght*3;
+  float wdth = width/10; //Standard Brick width
+  float hght = height/30; //Standard Brick height
+  float plusx = wdth/2; //offset from side of screen x axis
+  float plusy = hght*3; //offset from side of screen x axis
   color col = color(0,0,0);
   for (int i=0; i<10; i++) {//Y
     for (int j=0; j<10; j++) {//X
