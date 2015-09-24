@@ -31,6 +31,8 @@ class Ball {
       }
     } else if (x <= 0 || x > width) { // hit left edge or right edge
        vx = -vx;
+    } else {
+      startGame();
     }
   }
   
