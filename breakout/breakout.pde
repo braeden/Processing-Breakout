@@ -3,7 +3,7 @@ class Ball {
   float x, y;
   float vx, vy;
   float r;
-  
+ 
   Ball() {
     r = 10;
   }
