@@ -3,7 +3,7 @@ class Ball {
   float x, y;
   float vx, vy;
   float r;
- 
+  
   Ball() {
     r = 10;
   }
@@ -13,14 +13,16 @@ class Ball {
     y = yi; 
     vy = 1.5;
     int[] sign = {-1, 1};
-    vx = -(random(0.3, 1) * sign[round(random(1))]); // random number from -1 to -0.3 or 0.3 to 1
+    vx = random(0.3, 1) * sign[round(random(1))]; // random number from -1 to -0.3 or 0.3 to 1
   }
   
   void checkCollisions() {   
-    if (x > 0 && x < float(width)) { // in between left edge and right edge
+    if (y < height) { // in between left edge and right edge
       if (y <= 0 || y > height) // hit top edge or bottom edge
         vy = -vy;
-      else {        
+      else if (x <= 0 || x > width) {
+        vx = -vx;
+      } else {        
         if (collideCorners(p1)|| collideLeftOrRight(p1)) { // corner and left or right edge
           vx = -vx;
         } else if (collideTopOrBottom(p1)){ // top or bottom edge
@@ -79,12 +81,12 @@ class Paddle {
   }
   
   void move() {
-    if (left && x > (0 + h/2)) {
+    if (left && x > (0 + w/2)) {
       x -= s;
       
       if (b.collide(this))
         b.y -= s+1;
-    } else if (right && x < (width - h/2)) {
+    } else if (right && x < (width - w/2)) {
       x += s;
       
       if (b.collide(this))
@@ -97,9 +99,34 @@ class Paddle {
   }
 }
 
+
+
+class Bricks {
+  float x,y;
+  float w, h;
+  boolean hit;
+  color c;
+  Bricks(float inx, float iny, float inw, float inh, color inc, boolean inhit) {
+    x = inx;
+    y = iny;
+    w = inw;
+    h = inh;
+    c = inc;
+    hit = inhit;
+  }
+  
+  void draw() {
+    noStroke();
+    fill(c);
+    rect(x, y, w, h);
+  }
+}
+
+
 // GLOBALS
 Ball b;
 Paddle p1;
+Bricks[] brick;
 
 // GAME FUNCTIONS
 void startGame() {
@@ -136,7 +163,28 @@ void setup() {
   
   b = new Ball();
   p1 = new Paddle();
-  
+  brick = new Bricks[100];
+  float wdth = width/10; //Standard Brick width
+  float hght = height/30; //Standard Brick height
+  float plusx = wdth/2; //offset from side of screen x axis
+  float plusy = hght*3; //offset from side of screen x axis
+  color col = color(0,0,0);
+  for (int i=0; i<10; i++) {//Y
+    for (int j=0; j<10; j++) {//X
+      if (i<2) {
+        col = color(255,0,0);
+      } else if (i<4) {
+        col = color(255,165,0);
+      } else if (i<6) {
+        col = color(255,255,0);
+      } else if (i<8) {
+        col = color(0,255,0);
+      } else if (i<10) {
+        col = color(0,255,255);
+      }
+      brick[i*10+j] = new Bricks(wdth*j+plusx, hght*i+plusy, wdth-2, hght-2, col, false);
+    }
+  }
   startGame();
 }
 
@@ -148,11 +196,10 @@ void draw() {
   fill(100);
   b.draw();
   p1.draw();
-  
-  // MOVE PADDLES
-  p1.move();
- 
-  // MOVE BALL
+  for (int i=0; i<100; i++) {
+    brick[i].draw();
+  }
   b.checkCollisions();
+  p1.move();
   b.move();  
 }
