@@ -39,10 +39,18 @@ class Ball {
       if (b != null){
         if (collideC(b)|| collideLorR(b)) { // corner and left or right edge
           vx = -vx;
-          brick[i] = null;
+          if (b.hit) {
+            brick[i] = null;
+          }
+          b.hit = true;
+          b.c = color(0,255,0);
         } else if (collideTorB(b)){ // top or bottom edge
           vy = -vy;
-          brick[i] = null;         
+          if (b.hit) {
+            brick[i] = null;
+          }
+          b.hit = true;
+          b.c = color(0,0,0);       
         }
       }
       i++;
