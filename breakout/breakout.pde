@@ -18,7 +18,7 @@ class Ball {
   
   void checkCollisions() {   
     if (y < height) { // in between left edge and right edge
-      if (y <= 0 || y > height) // hit top edge or bottom edge
+      if (y <= 0 ) // hit top edge or bottom edge
         vy = -vy;
       else if (x <= 0 || x > width) {
         vx = -vx;
@@ -29,8 +29,6 @@ class Ball {
           vy = -vy;
         }
       }
-    } else if (x <= 0 || x > width) { // hit left edge or right edge
-       vx = -vx;
     } else {
       startGame();
     }
@@ -43,7 +41,7 @@ class Ball {
             brick[i] = null;
           }
           b.hit = true;
-          b.c = color(0,255,0);
+          b.c += color(0,0,0,75);
         } else if (collideTorB(b)){ // top or bottom edge
           vy = -vy;
           if (b.hit) {
