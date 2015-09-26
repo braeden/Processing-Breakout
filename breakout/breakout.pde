@@ -30,6 +30,7 @@ class Ball {
         }
       }
     } else {
+      lives--;
       startGame();
     }
     int i = 0;
@@ -39,16 +40,38 @@ class Ball {
           vx = -vx;
           if (b.hit) {
             brick[i] = null;
+            if (i < 20) {
+              score += 5;
+            } else if (i < 40) {
+              score += 4;
+            } else if (i < 60) {
+              score += 3;
+            } else if (i < 80) {
+              score += 2;
+            } else if (i < 100) {
+              score += 1;
+            }
           }
           b.hit = true;
-          b.c += color(0,0,0,75);
+          b.c += color(0,0,0,100);
         } else if (collideTorB(b)){ // top or bottom edge
           vy = -vy;
           if (b.hit) {
-            brick[i] = null;
+            brick[i] = null; //Make the brick element null if hit is already true
+            if (i < 20) {
+              score += 5;
+            } else if (i < 40) {
+              score += 4;
+            } else if (i < 60) {
+              score += 3;
+            } else if (i < 80) {
+              score += 2;
+            } else if (i < 100) {
+              score += 1;
+            }
           }
           b.hit = true;
-          b.c += color(0,0,0,75);       
+          b.c += color(0,0,0,100); //Opactiy change    
         }
       }
       i++;
@@ -160,12 +183,22 @@ class Bricks {
 Ball b;
 Paddle p1;
 Bricks[] brick;
+int lives = 3;
+int score = 0;
 
 // GAME FUNCTIONS
 void startGame() {
+  p1.initialize(float(width)/2.0, height-10);
   b.initialize(float(width)/2.0, float(height)/2.0);
-  p1.initialize(float(width)/2.0, height-15 );
 }
+
+void endGame() {
+  b.vx = 0;
+  b.vy = 0;
+  b.initialize(float(width)/2.0, float(height)/2.0);
+  p1.initialize(float(width)/2.0, height-10);
+}
+  
 
 float distance(float x1, float y1, float x2, float y2) {
   return(sqrt(sq(x2 - x1) + sq(y2 - y1)));
@@ -193,6 +226,8 @@ void setup() {
   ellipseMode(CENTER);
   rectMode(CENTER);
   frameRate(360);
+  textSize(20);
+  textAlign(CENTER);
   
   b = new Ball();
   p1 = new Paddle();
@@ -223,7 +258,13 @@ void setup() {
 
 void draw() {
   background(255);
-  
+  if (lives == 0) {
+    endGame();
+    textAlign(CENTER);
+    textSize(50);
+    text("Gameover", width/2, height/2);
+    textSize(20);
+  }
   // DRAW  
   stroke(0);
   fill(100);
@@ -234,6 +275,9 @@ void draw() {
       b.draw();
     }
   }
+  fill(0);
+  text("Lives: " + lives, 40, 25);
+  text("Score: " + score, width-50, 25);
   b.checkCollisions();
   p1.move();
   b.move();  
