@@ -34,6 +34,19 @@ class Ball {
     } else {
       startGame();
     }
+    int i = 0;
+    for (Bricks b: brick) {
+      if (b != null){
+        if (collideC(b)|| collideLorR(b)) { // corner and left or right edge
+          vx = -vx;
+          brick[i] = null;
+        } else if (collideTorB(b)){ // top or bottom edge
+          vy = -vy;
+          brick[i] = null;         
+        }
+      }
+      i++;
+    }
   }
   
   boolean collideTopOrBottom(Paddle p) {
@@ -46,7 +59,20 @@ class Ball {
   
   boolean collideCorners(Paddle p) {
     return(distance(x, y, p.x - p.w/2, p.y - p.h/2) <= r || distance(x, y, p.x + p.w/2, p.y - p.h/2) <= r || distance(x, y, p.x - p.w/2, p.y + p.h/2) <= r || distance(x, y, p.x + p.w/2, p.y + p.h/2) <= r);
-  }  
+  } 
+  
+  boolean collideTorB(Bricks brick) {
+    return((abs(brick.y - brick.h/2 - y) <= r || abs(brick.y + brick.h/2 - y) <= r) && x >= brick.x - brick.w/2 && x <= brick.x + brick.w/2);
+  }
+  
+  boolean collideLorR(Bricks brick) {
+    return((abs(brick.x - brick.w/2 - x) <= r || abs(brick.x + brick.w/2 - x) <= r) && y >= brick.y - brick.h/2 && y <= brick.y + brick.h/2);
+  }
+  
+  boolean collideC(Bricks brick) {
+    return(distance(x, y, brick.x - brick.w/2, brick.y - brick.h/2) <= r || distance(x, y, brick.x + brick.w/2, brick.y - brick.h/2) <= r || distance(x, y, brick.x - brick.w/2, brick.y + brick.h/2) <= r || distance(x, y, brick.x + brick.w/2, brick.y + brick.h/2) <= r);
+  } 
+  
   
   boolean collide(Paddle p) {
     return(collideTopOrBottom(p) || collideLeftOrRight(p) || collideCorners(p));
@@ -100,7 +126,6 @@ class Paddle {
     rect(x, y, w, h);
   }
 }
-
 
 
 class Bricks {
@@ -198,8 +223,10 @@ void draw() {
   fill(100);
   b.draw();
   p1.draw();
-  for (int i=0; i<100; i++) {
-    brick[i].draw();
+  for (Bricks b: brick) {
+    if (b != null) {
+      b.draw();
+    }
   }
   b.checkCollisions();
   p1.move();
