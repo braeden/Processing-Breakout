@@ -50,7 +50,7 @@ class Ball {
             brick[i] = null;
           }
           b.hit = true;
-          b.c = color(0,0,0);       
+          b.c += color(0,0,0,75);       
         }
       }
       i++;
@@ -211,11 +211,11 @@ void setup() {
       } else if (i<4) {
         col = color(255,165,0);
       } else if (i<6) {
-        col = color(255,255,0);
+        col = color(230,230,0);
       } else if (i<8) {
-        col = color(0,255,0);
+        col = color(0,230,0);
       } else if (i<10) {
-        col = color(0,255,255);
+        col = color(0,200,200);
       }
       brick[i*10+j] = new Bricks(wdth*j+plusx, hght*i+plusy, wdth-2, hght-2, col, false);
     }
