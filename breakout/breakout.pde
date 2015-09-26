@@ -262,7 +262,7 @@ void draw() {
     endGame();
     textAlign(CENTER);
     textSize(50);
-    text("Gameover", width/2, height/2);
+    text("Gameover", width/2, height/2+50);
     textSize(20);
   }
   // DRAW  
