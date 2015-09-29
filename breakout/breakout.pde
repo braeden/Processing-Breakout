@@ -54,6 +54,8 @@ class Ball {
       x += projx; // rectify collision
       vx = -vx; // bounce
     } else {
+      float dist = p.x - x;
+      vx = -(dist * 10);
       y += projy; // rectify collision
       vy = -vy; // bounce
     }
@@ -216,7 +218,7 @@ void setup() {
   size(800, 600);
   ellipseMode(CENTER);
   rectMode(CENTER);
-  frameRate(360);
+  frameRate(70);
   textSize(20);
   textAlign(CENTER);
   
@@ -254,9 +256,7 @@ void draw() {
   long ct = System.nanoTime();
   float dt = (ct - t) / 1000000000.0;
   t = ct;
-  
-  System.out.println(dt);
-  
+    
   background(255);
   if (lives == 0) {
     endGame();
