@@ -122,9 +122,6 @@ class Paddle {
     w = 100;
     h = 10;
     s = 200; // Paddle Speed
-    
-    left = false;
-    right = false;
   }
   
   void initialize(float xi, float yi) {
@@ -133,10 +130,11 @@ class Paddle {
   }
   
   void move(float dt) {
-    if (left && x > (0 + w/2)) {
-      x -= s*dt ;
-    } else if (right && x < (width - w/2)) {
-      x += s*dt;
+    x = mouseX;
+    if (x > (0 + w/2)) {
+      x -= w/2;
+    } else if (x < (width - w/2)) {
+      x = w/2;
     }
   }
   
@@ -196,21 +194,6 @@ float distance(float x1, float y1, float x2, float y2) {
 }
 
 // EVENTS
-void keyPressed() {
-    if (keyCode == LEFT) {
-      p1.left = true;
-    } else if (keyCode == RIGHT) {
-      p1.right = true;
-    }
-}
-
-void keyReleased() {
-    if (keyCode == LEFT) {
-      p1.left = false;
-    } else if (keyCode == RIGHT) {
-      p1.right = false;
-    }
-}
 
 void setup() {
   size(800, 600);
@@ -219,6 +202,7 @@ void setup() {
   frameRate(360);
   textSize(20);
   textAlign(CENTER);
+  noCursor();
   
   t = System.nanoTime();
   
@@ -254,8 +238,6 @@ void draw() {
   long ct = System.nanoTime();
   float dt = (ct - t) / 1000000000.0;
   t = ct;
-  
-  System.out.println(dt);
   
   background(255);
   if (lives == 0) {
