@@ -131,9 +131,9 @@ class Paddle {
   
   void move(float dt) {
     x = mouseX;
-    if (x > (0 + w/2)) {
+    if (x >= (0 + w/2)) {
       x -= w/2;
-    } else if (x < (width - w/2)) {
+    } else if (x <= (width - w/2)) {
       x = w/2;
     }
   }
