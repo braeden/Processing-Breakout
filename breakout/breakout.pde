@@ -3,7 +3,11 @@ class Ball {
   float x, y;
   float vx, vy;
   float r;
-  
+  int hitcnt = 0;
+  boolean redHit = false;
+  boolean yellowHit = false;
+  boolean topHit = false;
+
   Ball() {
     r = 10;
   }
@@ -27,6 +31,10 @@ class Ball {
       } else if(y <= r) {
         y = r;
         vy = -vy;
+        if (!topHit && redHit) {
+          topHit = true;
+          speedIncrease();
+        }  
       }else {
         collidePaddle(p1);
       }
@@ -90,7 +98,24 @@ class Ball {
       }
     }
     b.hit = true;
-    b.c += color(0,0,0,100); //Opactiy change    
+    b.c += color(0,0,0,100); //Opacity change 
+    hitcnt++;
+    if (i < 20 && !redHit) { //Check criteria for speedup
+      redHit = true;
+      speedIncrease();
+    } else if (i < 40 && !yellowHit) {
+      yellowHit = true;
+      speedIncrease();
+    } else if (hitcnt == 4) {
+      speedIncrease();
+    } else if (hitcnt == 12) {
+      speedIncrease();
+    }
+  }
+  
+  void speedIncrease() {
+    vx *= 1.5;
+    vy *= 1.5; 
   }
   
   void move(float dt) {
