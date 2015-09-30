@@ -286,7 +286,7 @@ void draw() {
   }
   fill(0);
   text("Lives: " + lives, 40, 25);
-  text("Score: " + score, width-50, 25);
+  text("Score: " + score, width-60, 25);
   b.checkCollisions();
   p1.move(dt);
   b.move(dt);  
