@@ -4,7 +4,7 @@ class Ball {
   float vx, vy;
   float r;
   int hitcnt = 0;
-  boolean redHit = false;
+  boolean redHit = true;
   boolean yellowHit = false;
   boolean topHit = false;
 
@@ -33,7 +33,7 @@ class Ball {
         vy = -vy;
         if (!topHit && redHit) {
           topHit = true;
-          speedIncrease();
+          p1.w = p1.w/2;
         }  
       }else {
         collidePaddle(p1);
