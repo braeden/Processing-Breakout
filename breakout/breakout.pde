@@ -4,7 +4,7 @@ class Ball {
   float vx, vy;
   float r;
   int hitcnt = 0;
-  boolean redHit = true;
+  boolean redHit = false;
   boolean yellowHit = false;
   boolean topHit = false;
 
@@ -199,6 +199,7 @@ Paddle p1;
 Brick[] bricks;
 int lives = 3;
 int score = 0;
+boolean restart = false;
 
 long t;
 
@@ -215,7 +216,11 @@ void endGame() {
   p1.initialize(float(width)/2.0, height-10);
   cursor();
 }
-  
+
+void restartGame() {
+  boolean restart = false;
+  setup();
+}
 
 float distance(float x1, float y1, float x2, float y2) {
   return(sqrt(sq(x2 - x1) + sq(y2 - y1)));
@@ -280,10 +285,15 @@ void draw() {
   fill(100);
   b.draw();
   p1.draw();
+  int i = 0;
   for (Brick b: bricks) {
     if (b != null) {
       b.draw();
+      i++;
     }
+  }
+  if (i == 0 && !restart) {
+    restartGame();
   }
   fill(0);
   text("Lives: " + lives, 40, 25);
