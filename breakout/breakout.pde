@@ -218,7 +218,7 @@ void endGame() {
 }
 
 void restartGame() {
-  boolean restart = false;
+  restart = true;
   setup();
 }
 
