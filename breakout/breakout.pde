@@ -199,7 +199,7 @@ Paddle p1;
 Brick[] bricks;
 int lives = 3;
 int score = 0;
-boolean restart = false;
+boolean redraw = false;
 
 long t;
 
@@ -218,10 +218,17 @@ void endGame() {
 }
 
 void restartGame() {
-  restart = true;
+  redraw = true;
   setup();
 }
-
+void keyPressed() {
+  if (key == 'r' || key == 'R') {
+    lives = 3;
+    score = 0;
+    redraw = false;
+    setup();
+  }
+}
 float distance(float x1, float y1, float x2, float y2) {
   return(sqrt(sq(x2 - x1) + sq(y2 - y1)));
 }
@@ -278,6 +285,8 @@ void draw() {
     textAlign(CENTER);
     textSize(50);
     text("Gameover", width/2, height/2+50);
+    textSize(30);
+    text("Press 'R' to restart", width/2, height/2+100);
     textSize(20);
   }
   // DRAW  
@@ -292,7 +301,7 @@ void draw() {
       i++;
     }
   }
-  if (i == 0 && !restart) {
+  if (i == 0 && !redraw) {
     restartGame();
   }
   fill(0);
