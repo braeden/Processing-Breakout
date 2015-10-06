@@ -7,6 +7,7 @@ class Ball {
   boolean redHit = false;
   boolean yellowHit = false;
   boolean topHit = false;
+  int v_multiplier = 10;
 
   Ball() {
     r = 10;
@@ -63,7 +64,7 @@ class Ball {
       vx = -vx; // bounce
     } else {
       float dist = p.x - x;
-      vx = -(dist * 10); //change this so it adds to speed
+      vx = -(dist * v_multiplier); //change this so it adds to speed
       y += projy; // rectify collision
       vy = -vy; // bounce
     }
@@ -83,9 +84,8 @@ class Ball {
       y += projy; // rectify collision
       vy = -vy; // bounce
     }
-    if (b.hit) {
-      bricks[i] = null; //Make the brick element null if hit is already true
-      if (i < 20) {
+    bricks[i] = null;
+    if (i < 20) {
         score += 5;
       } else if (i < 40) {
         score += 4;
@@ -96,9 +96,6 @@ class Ball {
       } else if (i < 100) {
         score += 1;
       }
-    }
-    b.hit = true;
-    b.c += color(0,0,0,100); //Opacity change 
     hitcnt++;
     if (i < 20 && !redHit) { //Check criteria for speedup
       redHit = true;
@@ -116,6 +113,7 @@ class Ball {
   void speedIncrease() {
     vx *= 1.5;
     vy *= 1.5; 
+    v_multiplier *= 1.5;
   }
   
   void move(float dt) {
@@ -197,7 +195,7 @@ class Brick {
 Ball b;
 Paddle p1;
 Brick[] bricks;
-int lives = 3;
+int lives = 5;
 int score = 0;
 boolean redraw = false;
 
