@@ -167,7 +167,6 @@ class Paddle {
 class Brick {
   float x,y;
   float w, h;
-  boolean hit;
   color c;
   Brick(float inx, float iny, float inw, float inh, color inc) {
     x = inx;
