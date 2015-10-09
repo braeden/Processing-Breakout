@@ -198,7 +198,7 @@ Brick[] bricks;
 int lives = 5;
 int score = 0;
 boolean redraw = false;
-
+boolean paused = false;
 long t;
 
 // GAME FUNCTIONS
@@ -225,6 +225,8 @@ void keyPressed() {
     score = 0;
     redraw = false;
     setup();
+  } else if (key == 'p'  || key == 'P') {
+    paused = !paused;
   }
 }
 float distance(float x1, float y1, float x2, float y2) {
@@ -276,7 +278,7 @@ void draw() {
   long ct = System.nanoTime();
   float dt = (ct - t) / 1000000000.0;
   t = ct;
-  
+  if (!focused) { paused = true; }
   background(255);
   if (lives == 0) {
     endGame();
@@ -286,8 +288,16 @@ void draw() {
     textSize(30);
     text("Press 'R' to restart", width/2, height/2+100);
     textSize(20);
+  } else if (paused) {
+    //cursor();
+    textAlign(CENTER);
+    textSize(50);
+    text("Paused", width/2, height/2+50);
+    textSize(30);
+    text("Press 'P' to resume", width/2, height/2+100);
+    textSize(20);
   }
-  // DRAW  
+  // DRAW 
   stroke(0);
   fill(100);
   b.draw();
@@ -305,7 +315,9 @@ void draw() {
   fill(0);
   text("Lives: " + lives, 40, 25);
   text("Score: " + score, width-60, 25);
-  b.checkCollisions();
-  p1.move(dt);
-  b.move(dt);  
+  if (!paused) {
+    b.checkCollisions();
+    p1.move(dt);
+    b.move(dt); 
+  }
 }
