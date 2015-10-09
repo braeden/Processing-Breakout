@@ -7,23 +7,21 @@ class Ball {
   boolean redHit = false;
   boolean yellowHit = false;
   boolean topHit = false;
-  int v_multiplier = 10;
+  int v_mult;
 
-  Ball() {
+  Ball(float xi, float yi, int vm) {
     r = 10;
-  }
-  
-  void initialize(float xi, float yi) {
+    v_mult = vm;
     x = xi;
-    y = yi; 
+    y = yi;
     vy = 170;
     int[] sign = {-1, 1};
-    vx = random(100, 160) * sign[round(random(1))]; // random number from -1 to -0.3 or 0.3 to 1
+    vx = random(100, 170) * sign[round(random(1))]; // random number from -100 to 170 or 0.3 to 1
   }
   
   void checkCollisions() {   
     if (y < height - r) { // in between left edge and right edge
-      if (x <= r ){ // hit top edge or bottom edge
+      if (x <= r ) { // hit top edge or bottom edge
         x = r;
         vx = -vx;
       } else if (x >= width - r) {
@@ -64,7 +62,7 @@ class Ball {
       vx = -vx; // bounce
     } else {
       float dist = p.x - x;
-      vx = -(dist * v_multiplier); //change this so it adds to speed
+      vx = -(dist * v_mult); //ball increases speed if closer to the corners
       y += projy; // rectify collision
       vy = -vy; // bounce
     }
@@ -86,34 +84,34 @@ class Ball {
     }
     bricks[i] = null;
     if (i < 20) {
-        score += 5;
-      } else if (i < 40) {
-        score += 4;
-      } else if (i < 60) {
-        score += 3;
-      } else if (i < 80) {
-        score += 2;
-      } else if (i < 100) {
-        score += 1;
-      }
+      score += 5;
+    } else if (i < 40) {
+      score += 4;
+    } else if (i < 60) {
+      score += 3;
+    } else if (i < 80) {
+      score += 2;
+    } else if (i < 100) {
+      score += 1;
+    }
     hitcnt++;
     if (i < 20 && !redHit) { //Check criteria for speedup
       redHit = true;
-      speedIncrease();
+      increaseSpeed();
     } else if (i < 40 && !yellowHit) {
       yellowHit = true;
-      speedIncrease();
+      increaseSpeed();
     } else if (hitcnt == 4) {
-      speedIncrease();
+      increaseSpeed();
     } else if (hitcnt == 12) {
-      speedIncrease();
+      increaseSpeed();
     }
   }
   
-  void speedIncrease() {
+  void increaseSpeed() {
     vx *= 1.5;
     vy *= 1.5; 
-    v_multiplier *= 1.5;
+    v_mult *= 1.5;
   }
   
   void move(float dt) {
@@ -143,13 +141,10 @@ class Paddle {
   float w, h;
   boolean left, right;
   
-  Paddle() {
+  Paddle(float xi, float yi) {
     w = 100;
     h = 10;
     s = 200; // Paddle Speed
-  }
-  
-  void initialize(float xi, float yi) {
     x = xi;
     y = yi;
   }
@@ -172,15 +167,13 @@ class Paddle {
 class Brick {
   float x,y;
   float w, h;
-  boolean hit;
   color c;
-  Brick(float inx, float iny, float inw, float inh, color inc, boolean inhit) {
+  Brick(float inx, float iny, float inw, float inh, color inc) {
     x = inx;
     y = iny;
     w = inw;
     h = inh;
     c = inc;
-    hit = inhit;
   }
   
   void draw() {
@@ -203,20 +196,21 @@ long t;
 
 // GAME FUNCTIONS
 void startGame() {
-  p1.initialize(float(width)/2.0, height-10);
-  b.initialize(float(width)/2.0, float(height)/2.0);
+  p1 = new Paddle(float(width)/2.0, height-10);
+  b = new Ball(float(width)/2.0, float(height)/2.0, 10);
 }
 
 void endGame() {
   b.vx = 0;
   b.vy = 0;
-  b.initialize(float(width)/2.0, float(height)/2.0);
-  p1.initialize(float(width)/2.0, height-10);
+  b = new Ball(float(width)/2.0, float(height)/2.0, 10);
+  p1 = new Paddle(float(width)/2.0, height-10);
   cursor();
 }
 
 void restartGame() {
   redraw = true;
+  b.v_mult = 10;
   setup();
 }
 void keyPressed() {
@@ -245,9 +239,7 @@ void setup() {
   noCursor();
   
   t = System.nanoTime();
-  
-  b = new Ball();
-  p1 = new Paddle();
+
   bricks = new Brick[100];
   float wdth = width/10; //Standard Brick width
   float hght = height/30; //Standard Brick height
@@ -267,7 +259,7 @@ void setup() {
       } else if (i<10) {
         col = color(0,200,200);
       }
-      bricks[i*10+j] = new Brick(wdth*j+plusx, hght*i+plusy, wdth-2, hght-2, col, false);
+      bricks[i*10+j] = new Brick(wdth*j+plusx, hght*i+plusy, wdth-2, hght-2, col);
     }
   }
   startGame();
