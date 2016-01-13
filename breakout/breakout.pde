@@ -262,6 +262,8 @@ void setup() {
       bricks[i*10+j] = new Brick(wdth*j+plusx, hght*i+plusy, wdth-2, hght-2, col);
     }
   }
+  p1 = new Paddle(float(width)/2.0, height-10);
+  b = new Ball(float(width)/2.0, float(height)/2.0, 10);
   startGame();
 }
 
